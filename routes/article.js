@@ -5,5 +5,6 @@ import ArticleController from '../controllers/article.js';
 const articleController = new ArticleController();
 
 router.get('/', (req, res) => articleController.getAllArticles(req, res));
+router.get('/slug/:slug', (req, res) => articleController.getArticleBySlug(req, res));
 
 export default router;
