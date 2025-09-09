@@ -12,6 +12,9 @@ app.get('/', (req, res) => {
 import articleRouter from './routes/article.js';
 app.use('/article', articleRouter);
 
+import authorRouter from './routes/author.js';
+app.use('/author', authorRouter);
+
 app.listen(_PORT, () => {
   console.log(`Example app listening at http://localhost:${_PORT}`);
 });
