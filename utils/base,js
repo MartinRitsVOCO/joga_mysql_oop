@@ -1,0 +1,46 @@
+const conn = require('./db.js'); // Replace with your MySQL pool configuration
+
+class BaseSQLModel {
+  constructor(tableName) {
+    this.tableName = tableName;
+  }
+
+  async create(data) {
+    const keys = Object.keys(data).join(', ');
+    const placeholders = Object.keys(data).map(() => '?').join(', ');
+    const values = Object.values(data);
+
+    const sql = `INSERT INTO ${this.tableName} (${keys}) VALUES (${placeholders})`;
+    const [result] = await conn.execute(sql, values);
+    return result.insertId;
+  }
+
+  async findById(id) {
+    const sql = `SELECT * FROM ${this.tableName} WHERE id = ?`;
+    const [rows] = await conn.execute(sql, [id]);
+    return rows[0];
+  }
+
+  async update(id, data) {
+    const updates = Object.keys(data).map(key => `${key} = ?`).join(', ');
+    const values = [...Object.values(data), id];
+
+    const sql = `UPDATE ${this.tableName} SET ${updates} WHERE id = ?`;
+    const [result] = await conn.execute(sql, values);
+    return result.affectedRows;
+  }
+
+  async delete(id) {
+    const sql = `DELETE FROM ${this.tableName} WHERE id = ?`;
+    const [result] = await conn.execute(sql, [id]);
+    return result.affectedRows;
+  }
+
+  async findAll() {
+    const sql = `SELECT * FROM ${this.tableName}`;
+    const [rows] = await conn.execute(sql);
+    return rows;
+  }
+}
+
+module.exports = BaseSQLModel;
