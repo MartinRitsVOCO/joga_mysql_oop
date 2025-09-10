@@ -40,6 +40,26 @@ class UserController {
             res.status(500).json({message: 'Error registering user', error: error.message});
         }
     }
+
+    async loginUser(req, res) {
+        try {
+            const userData = await userModel.findOne(req.body.username);
+            if(!userData) {
+                throw new Error('Login failed');
+            }
+            const passwordMatch = await bcrypt.compare(req.body.password, userData.password);
+            if(!passwordMatch) {
+                throw new Error('Login failed');
+            }
+            req.session.user = {user_id: userData.id, username: userData.username};
+            res.status(201).json({
+                message: 'User logged in',
+                user_session: req.session.user
+            });
+        } catch (error) {
+            res.status(500).json({message: 'Error logging in user', error: error.message});
+        }
+    }
 }
 
 export default UserController;
