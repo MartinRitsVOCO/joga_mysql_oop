@@ -46,6 +46,28 @@ class ArticleController {
             res.status(500).json({message: 'Error creating article', error: error.message});
         }
     }
+
+    async updateArticle(req, res) {
+        try {
+            const id = req.params.id;
+            const articleData = {
+                name: req.body.name,
+                slug: req.body.slug,
+                image: req.body.image,
+                body: req.body.body,
+                author_id: req.body.author_id,
+                published: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            }
+            const affectedRows = await articleModel.update(id, articleData);
+            if (affectedRows === 0) {
+                res.status(404).json({message: 'Article not found'});
+            } else {
+                res.status(200).json({message: 'Article updated', affectedRows: affectedRows});
+            }
+        } catch (error) {
+            res.status(500).json({message: 'Error updating article', error: error.message});
+        }
+    }
 }
 
 export default ArticleController;
