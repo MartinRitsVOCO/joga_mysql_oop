@@ -1,4 +1,3 @@
-import res from 'express/lib/response.js';
 import conn from '../utils/db.js';
 
 class BaseSQLModel {

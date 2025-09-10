@@ -1,4 +1,4 @@
-import BaseSQLModel from './base,js';
+import BaseSQLModel from './base.js';
 
 class AuthorModel extends BaseSQLModel {
   constructor() {
