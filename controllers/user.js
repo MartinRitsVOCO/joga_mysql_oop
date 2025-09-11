@@ -23,7 +23,8 @@ class UserController {
             const registeredId = await userModel.create({
                 username: req.body.username,
                 email: req.body.email,
-                password: cryptPassword
+                password: cryptPassword,
+                role: req.body.role
             });
 
             if(registeredId) {
