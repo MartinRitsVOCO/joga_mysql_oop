@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import ViewsController from "../controllers/views";
+import ViewsController from "../controllers/views.js";
 const viewsController = new ViewsController();
 
 router.get('/', viewsController.displayAllArticles);
