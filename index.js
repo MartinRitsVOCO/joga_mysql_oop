@@ -1,10 +1,11 @@
 import express from 'express';
 import sessions from 'express-session';
-import { ExpressHandlebars as hbs } from 'express-handlebars'
+import { create } from 'express-handlebars'
 import path from 'path';
 const _PORT = 3025;
 
 const app = express();
+const hbs = create({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(app.get('views'), 'layouts') });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -17,21 +18,22 @@ app.use(sessions({
 
 app.set('views', path.join(path.resolve(), 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs', hbs({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(app.get('views'), 'layouts') }));
+app.engine('hbs', hbs.engine);
 app.use(express.static(path.join(path.resolve(), 'public')));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/', async (_req, res) => {
+  const { articles } = await fetch('http://localhost:3025/api/article').then(res => res.json());
+  res.render('index', { articles: articles });
 });
 
 import articleRouter from './routes/article.js';
-app.use('/article', articleRouter);
+app.use('/api/article', articleRouter);
 
 import authorRouter from './routes/author.js';
-app.use('/author', authorRouter);
+app.use('/api/author', authorRouter);
 
 import userRouter from './routes/user.js';
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 
 app.listen(_PORT, () => {
   console.log(`Example app listening at http://localhost:${_PORT}`);
