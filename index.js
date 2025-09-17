@@ -26,6 +26,13 @@ app.get('/', async (_req, res) => {
   res.render('index', { articles: articles });
 });
 
+app.get('/article/:slug', async (req, res) => {
+  const { article } = await fetch(`http://localhost:3025/api/article/slug/${req.params.slug}`).then(res => res.json());
+  article.published = new Date(article.published).toLocaleDateString('et-et');
+  console.log(article);
+  res.render('article', { article: article });
+});
+
 import articleRouter from './routes/article.js';
 app.use('/api/article', articleRouter);
 
