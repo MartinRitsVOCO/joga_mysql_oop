@@ -1,5 +1,7 @@
 import express from 'express';
 import sessions from 'express-session';
+import { ExpressHandlebars as hbs } from 'express-handlebars'
+import path from 'path';
 const _PORT = 3025;
 
 const app = express();
@@ -12,6 +14,10 @@ app.use(sessions({
   cookie: { maxAge: 1000 * 60 * 60 * 24 },
   resave: false
 }))
+
+app.set('views', path.join(path.resolve(), 'views'));
+app.set('view engine', 'hbs');
+app.engine('hbs', hbs({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(app.get('views'), 'layouts') }));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
