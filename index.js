@@ -18,6 +18,7 @@ app.use(sessions({
 app.set('views', path.join(path.resolve(), 'views'));
 app.set('view engine', 'hbs');
 app.engine('hbs', hbs({ extname: '.hbs', defaultLayout: 'main', layoutsDir: path.join(app.get('views'), 'layouts') }));
+app.use(express.static(path.join(path.resolve(), 'public')));
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
