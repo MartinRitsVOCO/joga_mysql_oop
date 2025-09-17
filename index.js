@@ -41,6 +41,9 @@ app.use('/api/author', authorRouter);
 import userRouter from './routes/user.js';
 app.use('/api/user', userRouter);
 
+import viewsRouter from './routes/views.js';
+app.use('/', viewsRouter);
+
 app.listen(_PORT, () => {
   console.log(`Example app listening at http://localhost:${_PORT}`);
 });
