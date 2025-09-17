@@ -1,4 +1,3 @@
-import e from 'express';
 import ArticleModel from '../models/article.js';
 const articleModel = new ArticleModel();
 
